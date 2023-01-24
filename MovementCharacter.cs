@@ -19,8 +19,6 @@ public class MovementCharacter : MonoBehaviour
   //  public AudioSource sonidoCaida;
 
     Quaternion rotacionParado;
-     bool vivo = true;
-     bool vivo2 = true;
 
     void Start()
     {
@@ -91,41 +89,5 @@ public class MovementCharacter : MonoBehaviour
     {
         impulsoGravedad = alturaSalto;
     }
-
-   
-    private void Morir()
-    {
-        if (vivo)
-        { 
-           animatorPlayer.SetTrigger("Morir");
-         //   sonidoCaida.Play();//testear no suena
-            Debug.Log("COLISIONADO PLAYER MUERE");
-            vivo = false;
-        }
-    }
-    private void Morir2()
-    {
-        if (vivo2)
-        { 
-           // sonidoCaida.Play();  //testear no suena
-           animatorPlayer.SetTrigger("Morir2");
-            Debug.Log("COLISIONADO PLAYER MUERE2");
-            vivo2 = false;
-        }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.collider.tag.Equals("Enemy"))
-        {
-            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            
-        }
-
-    
-
-    }
-  
-     
 
 }
