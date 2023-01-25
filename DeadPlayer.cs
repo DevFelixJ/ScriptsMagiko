@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DeadPlayer : MonoBehaviour
 {
+    public GameObject panelMuerte;
+    public Text contadorMuertes;
     Animator animatorPlayer;
+    private int contador = 0;
     bool vivo = true;
     bool vivo2 = true;
     void Start(){
         animatorPlayer = GetComponent<Animator>();
+    }
+    void Update()
+    {
+        muerteUI();
     }
    public void Morir()
     {
@@ -18,6 +26,7 @@ public class DeadPlayer : MonoBehaviour
          //   sonidoCaida.Play();//testear no suena
             Debug.Log("COLISIONADO PLAYER MUERE");
             vivo = false;
+
         }
     }
     public void Morir2()
@@ -39,5 +48,24 @@ public class DeadPlayer : MonoBehaviour
             
         }
     }
-  
+    public void muerteUI()
+    {
+        if(vivo == false || vivo2 == false){
+            panelMuerte.SetActive(true);
+            contador++;
+            contadorMuertes.text = contador.ToString();
+
+
+            if(vivo == false)
+            {
+                animatorPlayer.ResetTrigger("Morir");
+                vivo = true;
+            }
+        else
+        {
+            animatorPlayer.ResetTrigger("Morir2");
+            vivo2 = true;
+        }
+        }
+    }
 }
