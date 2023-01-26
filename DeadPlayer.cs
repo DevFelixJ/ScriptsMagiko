@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class DeadPlayer : MonoBehaviour
 {
     public GameObject panelMuerte;
+    public GameObject puenteRandom;
+    public GameObject desactivarPuente;
+    GameObject puente;
     public Text contadorMuertes;
     Animator animatorPlayer;
     private int contador = 0;
@@ -13,10 +16,16 @@ public class DeadPlayer : MonoBehaviour
     bool vivo2 = true;
     void Start(){
         animatorPlayer = GetComponent<Animator>();
+        
+
     }
     void Update()
     {
         muerteUI();
+        puente = GameObject.FindGameObjectWithTag("puente");
+        desactivarPuente = puente;
+
+
     }
    public void Morir()
     {
@@ -50,22 +59,31 @@ public class DeadPlayer : MonoBehaviour
     }
     public void muerteUI()
     {
-        if(vivo == false || vivo2 == false){
+        if (vivo == false || vivo2 == false)
+        {
             panelMuerte.SetActive(true);
             contador++;
             contadorMuertes.text = contador.ToString();
+            while (contador % 5 == 0)
+            {
+                desactivarPuente.SetActive(false);
+                puenteRandom.GetComponent<RandomBridge>().ActivarPuenteRandom();
+                break;
+            }
 
 
-            if(vivo == false)
+            if (vivo == false)
             {
                 animatorPlayer.ResetTrigger("Morir");
                 vivo = true;
             }
-        else
-        {
-            animatorPlayer.ResetTrigger("Morir2");
-            vivo2 = true;
-        }
+            else
+            {
+                animatorPlayer.ResetTrigger("Morir2");
+                vivo2 = true;
+            }
         }
     }
+
+
 }
