@@ -7,22 +7,26 @@ using UnityEngine.SceneManagement;
 public class MovementCharacter : MonoBehaviour
 {
     [SerializeField]
-    private float velocidad ;
+    public float velocidad;
     [SerializeField]
     private float gravedad = 1f;
     [SerializeField]
     private float alturaSalto;
     private float impulsoGravedad;
+    public DeadPlayer DeadPlayer;
+    public EnemyBoxTemp enemyBoxTemp;
+    public bool isAlive;
 
     private CharacterController _characterController;
     Animator animatorPlayer;
-  //  public AudioSource sonidoCaida;
+    //  public AudioSource sonidoCaida;
 
     Quaternion rotacionParado;
 
     void Start()
     {
-   //     sonidoCaida = GetComponent<AudioSource>();
+        DeadPlayer = FindObjectOfType<DeadPlayer>();
+        //     sonidoCaida = GetComponent<AudioSource>();
         animatorPlayer = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
         if (_characterController is null)
@@ -30,26 +34,31 @@ public class MovementCharacter : MonoBehaviour
             Debug.Log("Character controler es Nulo");
         }
         rotacionParado = gameObject.transform.rotation;
-       // _renderer = GetComponent<Renderer>();
+        // _renderer = GetComponent<Renderer>();
     }
 
     void Update()
     {
+        enemyBoxTemp = FindObjectOfType<EnemyBoxTemp>();
+        
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direccion = new Vector3(verticalInput, 0, -horizontalInput);
         Vector3 velocity = direccion * velocidad;
-       
+
         if (_characterController.isGrounded) //si el charqacter controler esta tocando suelo
         {
             Quaternion rotacionInput;
-            Vector3 dir = new Vector3(-horizontalInput, 0, -verticalInput).normalized ;
-            if (dir != Vector3.zero) {
+            Vector3 dir = new Vector3(-horizontalInput, 0, -verticalInput).normalized;
+            if (dir != Vector3.zero)
+            {
                 rotacionInput = Quaternion.LookRotation(dir, Vector3.up);
-            } else { 
+            }
+            else
+            {
                 rotacionInput = rotacionParado;
             }
-            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotacionInput, Time.deltaTime  * 10); 
+            gameObject.transform.rotation = Quaternion.Slerp(gameObject.transform.rotation, rotacionInput, Time.deltaTime * 10);
 
             if (Input.GetKeyDown(KeyCode.Space))//y pulsamos Espacio
             {
@@ -61,14 +70,16 @@ public class MovementCharacter : MonoBehaviour
                 Invoke("ImpulsoSalto", .5f);
             }
 
-            if (direccion != Vector3.zero) 
+            if (direccion != Vector3.zero)
             {
                 animatorPlayer.SetBool("Caminar", true);
-            //    impulsoGravedad = alturaSalto;
-                if(Input.GetKeyDown(KeyCode.Space)){
+                //    impulsoGravedad = alturaSalto;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
                     Debug.Log("Estoy intentando saltar dentro del IF de caminar");
                     animatorPlayer.SetTrigger("Saltar");
                     animatorPlayer.SetBool("Caminar", false);
+                    Invoke("ImpulsoSalto", .5f);
                 }
             }
             else
@@ -81,7 +92,7 @@ public class MovementCharacter : MonoBehaviour
             impulsoGravedad -= gravedad; //si el player esta en el suelo le quitamos la gravedad
         }
         velocity.y = impulsoGravedad;
-            _characterController.Move(velocity * Time.deltaTime);
+        _characterController.Move(velocity * Time.deltaTime);
         //    _characterController.Move(velocity * Time.deltaTime);
     }
 
@@ -90,4 +101,23 @@ public class MovementCharacter : MonoBehaviour
         impulsoGravedad = alturaSalto;
     }
 
-}
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.tag.Equals("Enemy"))
+        {
+            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
+            velocidad = 0;
+            isAlive = false;
+            animatorPlayer.SetBool("Caminar", false);
+
+        }
+        if (!hit.collider.tag.Equals("Enemy") && isAlive == false)
+        {
+            enemyBoxTemp.RestaurarCubo();
+            velocidad = 2.5f;
+            isAlive = true;
+        }
+
+     }//End OnControllerColliderHit
+
+}//Fin Script
