@@ -12,9 +12,8 @@ public class DeadPlayer : MonoBehaviour
     public Text contadorMuertes;
     Animator animatorPlayer;
     private int contador = 5;
-    bool vivo = true;
-    bool vivo2 = true;
-    bool isAlive = true;
+    public bool vivo = true;
+    public bool vivo2 = true;
     void Start(){
         
         animatorPlayer = GetComponent<Animator>();
@@ -50,21 +49,10 @@ public class DeadPlayer : MonoBehaviour
         }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.collider.tag.Equals("Enemy") && isAlive == true)
-        {
-            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            isAlive = false;
-            Debug.Log(isAlive + "No estaba muerto estaba de parranda");
-            
-        }
-    }
     public void muerteUI()
     {
         if (vivo == false || vivo2 == false)
             {
-            isAlive = true;
             panelMuerte.SetActive(true);
             contador--;
             contadorMuertes.text = contador.ToString();
