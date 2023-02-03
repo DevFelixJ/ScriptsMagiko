@@ -11,13 +11,11 @@ public class EnemyBoxTemp : EnemyBox
     public Rigidbody rigidCaida;
     public GameObject cuboAmarillo;
     float tiempoCaida;
-    public DeadPlayer DeadPlayer;
     public List<Vector3> cuboGuardado;
     int contador = 0;
 
     private void Start()
     {
-        DeadPlayer = FindObjectOfType<DeadPlayer>();    
         texturaPuente = FindObjectOfType<RandomBridge>();
         rigidCaida = GetComponent<Rigidbody>();
 
