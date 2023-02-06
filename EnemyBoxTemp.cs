@@ -11,11 +11,13 @@ public class EnemyBoxTemp : EnemyBox
     public Rigidbody rigidCaida;
     public GameObject cuboAmarillo;
     float tiempoCaida;
+    public DeadPlayer DeadPlayer;
     public List<Vector3> cuboGuardado;
     int contador = 0;
 
     private void Start()
     {
+        DeadPlayer = FindObjectOfType<DeadPlayer>();    
         texturaPuente = FindObjectOfType<RandomBridge>();
         rigidCaida = GetComponent<Rigidbody>();
 
@@ -26,7 +28,8 @@ public class EnemyBoxTemp : EnemyBox
        // cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
       //  Debug.Log("Cambia Color amarillo 2 seg y destruye a 4 seg");
         Invoke("CambioAmarillo", 0.2f);
-        Invoke("CaidaCubo", 1.2f);
+        Invoke("CaidaCubo", 2f);
+        Invoke("ColliderCubo", 2.5f);
 
     }
     float RandomTiempoCaida() {
@@ -42,7 +45,13 @@ public class EnemyBoxTemp : EnemyBox
     {
         
         rigidCaida.isKinematic = false;
+       
+        cuboAmarillo.GetComponent<MeshRenderer>().enabled = false;
 
+    }
+    void ColliderCubo()
+    {
+        cuboAmarillo.GetComponent<Collider>().enabled = false;
     }
 
     public void RestaurarCubo()
@@ -55,6 +64,8 @@ public class EnemyBoxTemp : EnemyBox
             {
                 if (losasPuente[i].gameObject.GetComponent<Renderer>() != null && losasPuente[i].gameObject.GetComponent<Rigidbody>() != null)
                 {
+                    losasPuente[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                    losasPuente[i].gameObject.GetComponent<Collider>().enabled = true;
                     losasPuente[i].gameObject.GetComponent<Renderer>().material = texturaPuente.sueloPuente;
                     losasPuente[i].gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     losasPuente[i].gameObject.transform.position = cuboGuardado[i];
@@ -65,7 +76,7 @@ public class EnemyBoxTemp : EnemyBox
     }
     void GuardarCubos()
     {
-        if (contador == 0 || contador == 5)
+        if (contador == 0 || contador == 4)
         {
             cuboGuardado = new List<Vector3>();
             Transform[] posicionesLosas = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
