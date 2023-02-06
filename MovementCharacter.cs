@@ -106,14 +106,16 @@ public class MovementCharacter : MonoBehaviour
         if (hit.collider.tag.Equals("Enemy"))
         {
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            velocidad = 0;
+            //velocidad = 0;
             isAlive = false;
             animatorPlayer.SetBool("Caminar", false);
+            
 
         }
         if (!hit.collider.tag.Equals("Enemy") && isAlive == false)
         {
             enemyBoxTemp.RestaurarCubo();
+            impulsoGravedad = -4f;
             velocidad = 2.5f;
             isAlive = true;
         }
