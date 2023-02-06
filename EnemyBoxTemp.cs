@@ -17,7 +17,7 @@ public class EnemyBoxTemp : EnemyBox
 
     private void Start()
     {
-        DeadPlayer = FindObjectOfType<DeadPlayer>();    
+        DeadPlayer = FindObjectOfType<DeadPlayer>();
         texturaPuente = FindObjectOfType<RandomBridge>();
         rigidCaida = GetComponent<Rigidbody>();
 
@@ -25,27 +25,28 @@ public class EnemyBoxTemp : EnemyBox
     }
     public override void PlayerInteractua()
     {
-       // cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
-      //  Debug.Log("Cambia Color amarillo 2 seg y destruye a 4 seg");
+        // cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
+        //  Debug.Log("Cambia Color amarillo 2 seg y destruye a 4 seg");
         Invoke("CambioAmarillo", 0.2f);
-        Invoke("CaidaCubo", 2f);
-        Invoke("ColliderCubo", 2.5f);
+        Invoke("CaidaCubo", 0.5f);
+        Invoke("ColliderCubo", 1.5f);
 
     }
-    float RandomTiempoCaida() {
+    float RandomTiempoCaida()
+    {
         tiempoCaida = Random.Range(0.1f, 5.5f);
         return tiempoCaida;
     }
     void CambioAmarillo()
-     {
+    {
         cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
         //cuboAmarillo.GetComponent<Renderer>().material.color = cambioAmarillo;  
-     }
-    void CaidaCubo() 
+    }
+    void CaidaCubo()
     {
-        
+
         rigidCaida.isKinematic = false;
-       
+
         cuboAmarillo.GetComponent<MeshRenderer>().enabled = false;
 
     }
@@ -71,7 +72,7 @@ public class EnemyBoxTemp : EnemyBox
                     losasPuente[i].gameObject.transform.position = cuboGuardado[i];
                 }
             }
-            
+
         }
     }
     void GuardarCubos()
