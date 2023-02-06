@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomBridge : MonoBehaviour
@@ -8,18 +9,18 @@ public class RandomBridge : MonoBehaviour
     public Material sueloPuente;
     public GameObject puenteElegido;
     public GameObject puenteActivado;
+    public int numeroPuente;
     
 
     void Start()
     {
         ActivarPuenteRandom();
-        EncontrarPuente();
 
 
     }
     private void Update()
     {
-            StartCoroutine(EncontrarPuente());
+        puenteElegido = GameObject.FindGameObjectWithTag("puente");
 
         
     }
@@ -30,6 +31,8 @@ public class RandomBridge : MonoBehaviour
         int n = Random.Range(0, puentes.Length);
         puenteElegido = puentes[n];
         puenteElegido.SetActive(true);
+        puenteActivado = puenteElegido;
+        numeroPuente = n;
 
     }
     public void restaurarPuente()
@@ -40,13 +43,8 @@ public class RandomBridge : MonoBehaviour
         puenteActivado = Instantiate(puenteElegido) as GameObject;
         puenteActivado.transform.SetParent(puenteCubos, false);
         puenteActivado.name = puenteElegido.name;
-        puenteElegido = puenteActivado;
+        puentes[numeroPuente] = puenteActivado;
+       
     }
 
-    public IEnumerator EncontrarPuente()
-    {
-        yield return new WaitForSeconds(1);
-        puenteActivado = GameObject.FindGameObjectWithTag("puente");
-
-    }
 }
