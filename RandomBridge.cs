@@ -114,7 +114,7 @@ public class MovementCharacter : MonoBehaviour
 
         }
         if (!hit.collider.tag.Equals("Enemy") && isAlive == false)
-        {//Cuando se le va el collider al cubo trampa, se activa el script, RestaurarCubo() en EnemyBoxTemp y se le devuelve las animaciones y la velocidad, sumandole un
+        {//Cuando se le va el collider del cubo trampa, se activa el script, RestaurarCubo() en EnemyBoxTemp y se le devuelve las animaciones y la velocidad, sumandole un
          //contador para que se pueda restaurar una vez que vuelve el player.
             enemyBoxTemp.RestaurarCubo();
             impulsoGravedad = -2f;
