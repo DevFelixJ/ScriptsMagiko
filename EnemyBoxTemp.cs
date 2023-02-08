@@ -13,7 +13,8 @@ public class EnemyBoxTemp : EnemyBox
     float tiempoCaida;
     public DeadPlayer DeadPlayer;
     public List<Vector3> cuboGuardado;
-    int contador = 0;
+    public int contador = 0;
+    Vector3 colliderCenter;
 
     private void Start()
     {
@@ -25,40 +26,23 @@ public class EnemyBoxTemp : EnemyBox
     }
     public override void PlayerInteractua()
     {
-        // cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
-        //  Debug.Log("Cambia Color amarillo 2 seg y destruye a 4 seg");
         Invoke("CambioAmarillo", 0.2f);
-        Invoke("CaidaCubo", 0.5f);
-        Invoke("ColliderCubo", 1.5f);
-
-    }
-    float RandomTiempoCaida()
-    {
-        tiempoCaida = Random.Range(0.1f, 5.5f);
-        return tiempoCaida;
+        Invoke("CaidaCubo", 0.3f);
     }
     void CambioAmarillo()
-    {
+    {//Cambio de textura al pisar.
         cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
-        //cuboAmarillo.GetComponent<Renderer>().material.color = cambioAmarillo;  
     }
     void CaidaCubo()
-    {
-
-        rigidCaida.isKinematic = false;
+    {//Aqui le quitamos la malla y el collider.
 
         cuboAmarillo.GetComponent<MeshRenderer>().enabled = false;
-
-    }
-    void ColliderCubo()
-    {
         cuboAmarillo.GetComponent<Collider>().enabled = false;
     }
 
     public void RestaurarCubo()
-    {
-        contador++;
-        if (contador < 5)
+    {//Cada vez que el jugador se cae, se restaura todos los cubos a su posicion inicial con la textura del puente.
+        if (contador >= 1 )
         {
             Transform[] losasPuente = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
             for (int i = 0; i < losasPuente.Length; i++)
@@ -72,12 +56,14 @@ public class EnemyBoxTemp : EnemyBox
                     losasPuente[i].gameObject.transform.position = cuboGuardado[i];
                 }
             }
+            
 
         }
     }
     void GuardarCubos()
     {
-        if (contador == 0 || contador == 4)
+        //Cuando el contador que aparece en pantall sea = 5. Se guarda en una lista todas las posiciones de los cubos del puente.
+        if (DeadPlayer.contador == 5)
         {
             cuboGuardado = new List<Vector3>();
             Transform[] posicionesLosas = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
@@ -86,10 +72,11 @@ public class EnemyBoxTemp : EnemyBox
                 cuboGuardado.Add(posicionLosa.gameObject.transform.position);
 
             }
-            contador = 0;
+            contador = 1;
 
         }
     }
+   
 
     void Update()
     {
