@@ -106,10 +106,7 @@ public class MovementCharacter : MonoBehaviour
         if (hit.collider.tag.Equals("Enemy"))
         {//Cuando pisa la losa, activamos el script, que hace que el jugador vaya al centro de la losa sin poder moverse y caer. EnemyBoxTemp.
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            velocidad = 0;
-            animatorPlayer.SetBool("Caminar", false);
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, hit.collider.GetComponent<Renderer>().bounds.center.z + 0.2f);
-            this.transform.rotation = Quaternion.Euler(0,-80,0);
+            StartCoroutine(caidaPlayer());
             isAlive = false;
 
         }
@@ -124,5 +121,13 @@ public class MovementCharacter : MonoBehaviour
         }
 
      }//End OnControllerColliderHit
+
+    IEnumerator caidaPlayer()
+    {
+        yield return new WaitForSeconds(0.2f);
+        velocidad = 0;
+        animatorPlayer.SetBool("Caminar", false);
+        this.transform.rotation = Quaternion.Euler(0, -80, 0);
+    }
 
 }//Fin Script
