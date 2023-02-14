@@ -11,7 +11,7 @@ public class DeadPlayer : MonoBehaviour
     public RandomBridge desactivarPuente;
     public Text contadorMuertes;
     Animator animatorPlayer;
-    private int contador = 5;
+    public int contador = 5;
     public bool vivo = true;
     public bool vivo2 = true;
     void Start(){
