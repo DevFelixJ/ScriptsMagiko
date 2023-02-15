@@ -47,6 +47,7 @@ public class EnemyBoxTemp : EnemyBox
             Transform[] losasPuente = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
             for (int i = 0; i < losasPuente.Length; i++)
             {
+                
                 if (losasPuente[i].gameObject.GetComponent<Renderer>() != null && losasPuente[i].gameObject.GetComponent<Rigidbody>() != null)
                 {
                     losasPuente[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -55,16 +56,18 @@ public class EnemyBoxTemp : EnemyBox
                     losasPuente[i].gameObject.GetComponent<Rigidbody>().isKinematic = true;
                     losasPuente[i].gameObject.transform.position = cuboGuardado[i];
                 }
+                
             }
             
 
         }
     }
-    void GuardarCubos()
+    public void GuardarCubos()
     {
-        //Cuando el contador que aparece en pantall sea = 5. Se guarda en una lista todas las posiciones de los cubos del puente.
+        //Cuando el contador que aparece en pantalla sea = 5. Se guarda en una lista todas las posiciones de los cubos del puente.
         if (DeadPlayer.contador == 5)
         {
+            
             cuboGuardado = new List<Vector3>();
             Transform[] posicionesLosas = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
             foreach (Transform posicionLosa in posicionesLosas)
@@ -80,6 +83,6 @@ public class EnemyBoxTemp : EnemyBox
 
     void Update()
     {
-        GuardarCubos();
+        //GuardarCubos();
     }
 }
