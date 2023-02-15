@@ -15,6 +15,7 @@ public class Menu_UI : MonoBehaviour
     public GameObject jugador;
     CharacterController controlJugador;
     Vector3 posicionInicial;
+    public EnemyBoxTemp enemyBoxTemp;
 
     [SerializeField] GameObject objetoSonidoLetras;
     public AudioSource audioObjeto;
@@ -39,6 +40,7 @@ public class Menu_UI : MonoBehaviour
     void Update()
     {
          MenuInicial();
+        enemyBoxTemp = FindObjectOfType<EnemyBoxTemp>();
     }
 
     public class FadeAudioSource : MonoBehaviour
@@ -91,17 +93,16 @@ public class Menu_UI : MonoBehaviour
             botonNoPause.SetActive(false);
             panelInicio.SetActive(false);
             Time.timeScale = 1;
-
         }
 
     }
     public void RecargarEscena() {
-
-        controlJugador.enabled = false;
-        controlJugador.transform.position = posicionInicial;
-        controlJugador.enabled = true;
-        panelMuerte.SetActive(false);
-        Time.timeScale = 1;
+            enemyBoxTemp.RestaurarCubo();
+            controlJugador.enabled = false;
+            controlJugador.transform.position = posicionInicial;
+            controlJugador.enabled = true;
+            panelMuerte.SetActive(false);
+            Time.timeScale = 1;
     }
     public void SalirDelJuego()//METODO DE CIERRE JUEGO
     { 
