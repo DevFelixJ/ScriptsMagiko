@@ -14,7 +14,6 @@ public class EnemyBoxTemp : EnemyBox
     public DeadPlayer DeadPlayer;
     public List<Vector3> cuboGuardado;
     public int contador = 0;
-    Vector3 colliderCenter;
 
     private void Start()
     {
@@ -26,16 +25,25 @@ public class EnemyBoxTemp : EnemyBox
     }
     public override void PlayerInteractua()
     {
-        Invoke("CambioAmarillo", 0.2f);
-        Invoke("CaidaCubo", 0.3f);
+        if(cuboAmarillo.tag.Equals("enemyTime"))
+        {
+            Invoke("CambioAmarillo", 0.5f);
+            Invoke("CaidaCubo", 2);
+        }
+        else
+        {
+            Invoke("CambioAmarillo", 0.2f);
+            Invoke("CaidaCubo", 0.3f);
+        }
+
     }
+       
     void CambioAmarillo()
     {//Cambio de textura al pisar.
         cuboAmarillo.GetComponent<Renderer>().material = renderMaterial;
     }
     void CaidaCubo()
     {//Aqui le quitamos la malla y el collider.
-
         cuboAmarillo.GetComponent<MeshRenderer>().enabled = false;
         cuboAmarillo.GetComponent<Collider>().enabled = false;
     }
@@ -44,10 +52,9 @@ public class EnemyBoxTemp : EnemyBox
     {//Cada vez que el jugador se cae, se restaura todos los cubos a su posicion inicial con la textura del puente.
         if (contador >= 1 )
         {
-            Transform[] losasPuente = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
+            Transform[] losasPuente = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>(true);
             for (int i = 0; i < losasPuente.Length; i++)
             {
-                
                 if (losasPuente[i].gameObject.GetComponent<Renderer>() != null && losasPuente[i].gameObject.GetComponent<Rigidbody>() != null)
                 {
                     losasPuente[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -69,7 +76,7 @@ public class EnemyBoxTemp : EnemyBox
         {
             
             cuboGuardado = new List<Vector3>();
-            Transform[] posicionesLosas = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>();
+            Transform[] posicionesLosas = GameObject.FindGameObjectWithTag("puente").GetComponentsInChildren<Transform>(true);
             foreach (Transform posicionLosa in posicionesLosas)
             {
                 cuboGuardado.Add(posicionLosa.gameObject.transform.position);
@@ -83,6 +90,6 @@ public class EnemyBoxTemp : EnemyBox
 
     void Update()
     {
-        //GuardarCubos();
+        GuardarCubos();
     }
 }
