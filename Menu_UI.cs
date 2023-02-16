@@ -96,8 +96,8 @@ public class Menu_UI : MonoBehaviour
         }
 
     }
-    public void RecargarEscena() {
-            enemyBoxTemp.RestaurarCubo();
+    public void RecargarEscena() //METODO RECARGAR ESCENA
+    {
             controlJugador.enabled = false;
             controlJugador.transform.position = posicionInicial;
             controlJugador.enabled = true;
