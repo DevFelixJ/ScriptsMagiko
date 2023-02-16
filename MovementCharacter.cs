@@ -15,7 +15,10 @@ public class MovementCharacter : MonoBehaviour
     private float impulsoGravedad;
     public DeadPlayer DeadPlayer;
     public EnemyBoxTemp enemyBoxTemp;
+    public EnemyBoxNpcBlack enemyBoxNpcBlack;
+    public bool isFalling;
     public bool isAlive;
+    public bool Timer = false;
 
     private CharacterController _characterController;
     Animator animatorPlayer;
@@ -26,6 +29,8 @@ public class MovementCharacter : MonoBehaviour
     void Start()
     {
         DeadPlayer = FindObjectOfType<DeadPlayer>();
+        isAlive = true;
+        isFalling= false;
         //     sonidoCaida = GetComponent<AudioSource>();
         animatorPlayer = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
@@ -40,7 +45,8 @@ public class MovementCharacter : MonoBehaviour
     void Update()
     {
         enemyBoxTemp = FindObjectOfType<EnemyBoxTemp>();
-        
+        enemyBoxNpcBlack= FindObjectOfType<EnemyBoxNpcBlack>();
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direccion = new Vector3(verticalInput, 0, -horizontalInput);
@@ -103,31 +109,72 @@ public class MovementCharacter : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {//Cuando el player pisa un cubo con el tag ENEMY, se activa el script.
-        if (hit.collider.tag.Equals("Enemy"))
+        if (hit.collider.tag.Equals("enemy") && isFalling == false || hit.collider.tag.Equals("enemyTime") && Timer == false)
         {//Cuando pisa la losa, activamos el script, que hace que el jugador vaya al centro de la losa sin poder moverse y caer. EnemyBoxTemp.
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            StartCoroutine(caidaPlayer());
+            StartCoroutine(CaidaPlayer());
+            if(hit.collider.tag.Equals("enemy") && isFalling == false)
+            {
+                isFalling = true;
+            }
+            else if(hit.collider.tag.Equals("enemyTime") && Timer == false)
+            {
+                Timer = true;
+            }
+
+
+        }
+
+        //Hit enemyDmg
+       else if (hit.collider.tag.Equals("enemyDmg") && isAlive == true)
+        {
+
+            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
+            StartCoroutine(EnemigoGolpe());
             isAlive = false;
 
         }
-        if (!hit.collider.tag.Equals("Enemy") && isAlive == false)
-        {//Cuando se le va el collider del cubo trampa, se activa el script, RestaurarCubo() en EnemyBoxTemp y se le devuelve las animaciones y la velocidad, sumandole un
-         //contador para que se pueda restaurar una vez que vuelve el player.
-            enemyBoxTemp.RestaurarCubo();
-            impulsoGravedad = -2f;
-            velocidad = 2.5f;
-            isAlive = true;
-            enemyBoxTemp.contador++;
+        else if (hit.collider.tag.Equals("greenBox"))
+        {
+            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
+
+        }
+        else if (hit.collider.tag.Equals("greenBoxArrow"))
+        {
+            hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
         }
 
-     }//End OnControllerColliderHit
+        if (!hit.collider.tag.Equals("enemy") && isFalling == true || !hit.collider.tag.Equals("enemyTime") && Timer == true)
+        {
+            Resucitar();
+        }
+        if(!hit.collider.tag.Equals("enemyDmg") && isAlive == false)
+        {
+            Resucitar();
+        }
 
-    IEnumerator caidaPlayer()
+    }//End OnControllerColliderHit
+
+    IEnumerator CaidaPlayer()
     {
         yield return new WaitForSeconds(0.2f);
         velocidad = 0;
         animatorPlayer.SetBool("Caminar", false);
         this.transform.rotation = Quaternion.Euler(0, -80, 0);
     }
-
+    IEnumerator EnemigoGolpe()
+    {
+        yield return new WaitForSeconds(0.2f);
+        velocidad = 0;
+    }
+    public void Resucitar()
+    {
+        enemyBoxTemp.RestaurarCubo();
+        impulsoGravedad = -2f;
+        velocidad = 2.5f;
+        isFalling = false;
+        isAlive = true;
+        Timer = false;
+        enemyBoxTemp.contador++;
+    }
 }//Fin Script
