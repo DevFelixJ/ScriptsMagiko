@@ -10,6 +10,7 @@ public class EnemyBoxNpcBlack : EnemyBox
     public GameObject Cubo5;
     public Material renderMaterial;
     public RandomBridge texturaPuente;
+    public EnemyBoxPista enemyBoxPista;
 
     private void Awake()
     {
@@ -20,13 +21,13 @@ public class EnemyBoxNpcBlack : EnemyBox
     void Start()
     {
         texturaPuente = FindObjectOfType<RandomBridge>();
+        enemyBoxPista= FindObjectOfType<EnemyBoxPista>();
     }
     public override void PlayerInteractua()
     {
             Invoke("CambioRojo", 0.2f);
             Invoke("ActivoEnemy", 0.3f);
-            Invoke("DesactivarCollider", 3);
-            Invoke("RestaurarEnemigo",3.5f);
+            Invoke("RestaurarEnemigo",4.5f);
 
             //Debug.Log("Test enemigo aparece ok");
             //Destroy(enemigoBlackNpc, 7)
@@ -35,22 +36,17 @@ public class EnemyBoxNpcBlack : EnemyBox
     void ActivoEnemy()
     {
         enemigoBlackNpc.SetActive(true);
-        
+
 
     }
     void CambioRojo()
     {
         Cubo5.GetComponent<Renderer>().material = renderMaterial;
     }
-    void DesactivarCollider()
-    {
-        
-        Cubo5.GetComponent<Collider>().enabled = false;
-    }
     public void RestaurarEnemigo()
     {
         enemigoBlackNpc.SetActive(false);
-        GameObject.FindGameObjectWithTag("enemyDmg").GetComponent<BoxCollider>().enabled = true;
+        enemyBoxPista.DesactivarFlecha();
     }
 
 
