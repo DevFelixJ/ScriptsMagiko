@@ -7,8 +7,11 @@ public class EnemigoGolpe : MonoBehaviour
     // Start is called before the first frame update
     void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<Animator>().SetTrigger("Morir");
-        StartCoroutine(MuertePlayer());
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            other.GetComponent<Animator>().SetTrigger("Morir");
+            StartCoroutine(MuertePlayer());
+        }
     }
     IEnumerator MuertePlayer()
     {
