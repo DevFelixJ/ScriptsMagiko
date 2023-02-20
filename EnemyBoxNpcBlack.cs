@@ -15,8 +15,6 @@ public class EnemyBoxNpcBlack : EnemyBox
     private void Awake()
     {
         enemigoBlackNpc.SetActive(false);
-        
-        //posicionLosa = transform.position;
     }
     void Start()
     {
@@ -46,10 +44,7 @@ public class EnemyBoxNpcBlack : EnemyBox
     public void RestaurarEnemigo()
     {
         enemigoBlackNpc.SetActive(false);
-        enemyBoxPista.DesactivarFlecha();
     }
 
 
 }
-
-
