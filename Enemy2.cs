@@ -9,7 +9,7 @@ public class Enemy2 : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            other.GetComponent<Animator>().SetTrigger("Morir2");
+            other.GetComponent<Animator>().SetBool("Morir2",true);
             StartCoroutine(MuertePlayer());
         }
     }
@@ -17,5 +17,6 @@ public class Enemy2 : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         GameObject.FindGameObjectWithTag("Player").GetComponent<DeadPlayer>().vivo2 = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetBool("Morir2", false);
     }
 }
