@@ -14,8 +14,8 @@ public class DeadPlayer : MonoBehaviour
     public int contador = 5;
     public bool vivo = true;
     public bool vivo2 = true;
-    void Start(){
-        
+    void Start()
+    {
         animatorPlayer = GetComponent<Animator>();
         contadorMuertes.text = contador.ToString();
     }
@@ -23,16 +23,13 @@ public class DeadPlayer : MonoBehaviour
     {
         muerteUI();
         desactivarPuente = FindObjectOfType<RandomBridge>();
-
-
-
     }
-   public void Morir()
+    public void Morir()
     {
         if (vivo)
-        { 
-           animatorPlayer.SetTrigger("Morir");
-         //   sonidoCaida.Play();//testear no suena
+        {
+            //animatorPlayer.SetTrigger("Morir");
+            //sonidoCaida.Play();//testear no suena
             Debug.Log("COLISIONADO PLAYER MUERE");
             vivo = false;
 
@@ -41,9 +38,9 @@ public class DeadPlayer : MonoBehaviour
     public void Morir2()
     {
         if (vivo2)
-        { 
-           // sonidoCaida.Play();  //testear no suena
-           animatorPlayer.SetTrigger("Morir2");
+        {
+            // sonidoCaida.Play();  //testear no suena
+            //animatorPlayer.SetTrigger("Morir2");
             Debug.Log("COLISIONADO PLAYER MUERE2");
             vivo2 = false;
         }
@@ -52,34 +49,30 @@ public class DeadPlayer : MonoBehaviour
     public void muerteUI()
     {
         if (vivo == false || vivo2 == false)
-            {
+        {
             panelMuerte.SetActive(true);
             contador--;
             contadorMuertes.text = contador.ToString();
-            puenteRandom.GetComponent<RandomBridge>().restaurarPuente();
             while (contador == 0)
-                {
-                    desactivarPuente.puenteActivado.SetActive(false);
-                    puenteRandom.GetComponent<RandomBridge>().ActivarPuenteRandom();
-                    contador = 5;
-                    contadorMuertes.text = contador.ToString();
-                    break;
-                }
+            {
+                desactivarPuente.puenteActivado.SetActive(false);
+                puenteRandom.GetComponent<RandomBridge>().ActivarPuenteRandom();
+                contador = 5;
+                contadorMuertes.text = contador.ToString();
+                break;
+            }
 
 
-                if (vivo == false)
-                {
-                    animatorPlayer.ResetTrigger("Morir");
-                    vivo = true;
-                }
-                else
-                {
-                    animatorPlayer.ResetTrigger("Morir2");
-                    vivo2 = true;
-                }
+            if (vivo == false)
+            {
+                animatorPlayer.ResetTrigger("Morir");
+                vivo = true;
+            }
+            else
+            {
+                animatorPlayer.ResetTrigger("Morir2");
+                vivo2 = true;
             }
         }
-    
-
-
     }
+}
