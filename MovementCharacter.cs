@@ -15,7 +15,7 @@ public class MovementCharacter : MonoBehaviour
     private float impulsoGravedad;
     public DeadPlayer DeadPlayer;
     public EnemyBoxTemp enemyBoxTemp;
-    public EnemyBoxNpcBlack enemyBoxNpcBlack;
+    public EnemyBoxNpc enemyBoxNpc;
     public bool isFalling;
     public bool isAlive;
     public bool Timer = false;
@@ -46,7 +46,7 @@ public class MovementCharacter : MonoBehaviour
     void Update()
     {
         enemyBoxTemp = FindObjectOfType<EnemyBoxTemp>();
-        enemyBoxNpcBlack= FindObjectOfType<EnemyBoxNpcBlack>();
+        enemyBoxNpc = FindObjectOfType<EnemyBoxNpc>();
         enemyBoxPista= FindObjectOfType<EnemyBoxPista>();
 
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -109,8 +109,8 @@ public class MovementCharacter : MonoBehaviour
         impulsoGravedad = alturaSalto;
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {//Cuando el player pisa un cubo con el tag ENEMY, se activa el script.
+    private void OnControllerColliderHit(ControllerColliderHit hit)//Cuando el player pisa un cubo con el tag enemy o enemyTime, se activa el script.
+    {
         if (hit.collider.tag.Equals("enemy") && isFalling == false || hit.collider.tag.Equals("enemyTime") && Timer == false)
         {//Cuando pisa la losa, activamos el script, que hace que el jugador vaya al centro de la losa sin poder moverse y caer. EnemyBoxTemp.
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
@@ -126,28 +126,28 @@ public class MovementCharacter : MonoBehaviour
         }
 
         
-       else if (hit.collider.tag.Equals("enemyDmg") && isAlive == true)//Cuando entre en el collider del enemigo
+       else if (hit.collider.tag.Equals("enemyDmg") && isAlive == true)//Cuando entre en el collider del enemigo.EnemyBoxNpc.
         {
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            StartCoroutine(EnemigoGolpe());
+            //StartCoroutine(EnemigoGolpe());
             isAlive = false;
 
         }
-        else if (hit.collider.tag.Equals("greenBox"))//Cuando entre en la losa verde.
+        else if (hit.collider.tag.Equals("greenBox"))//Cuando entre en la losa verde.EnemyBoxColor.
         {
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
 
         }
-        else if (hit.collider.tag.Equals("greenBoxArrow"))//Cuando entre en la losa de la pista.
+        else if (hit.collider.tag.Equals("greenBoxArrow"))//Cuando entre en la losa de la pista.EnemyBoxPista.
         {
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
         }
         //Cuando el player muere, se restaura a la posicion original el puente y el player.
-        if (!hit.collider.tag.Equals("enemy") && isFalling == true || !hit.collider.tag.Equals("enemyTime") && Timer == true)
+        if (!hit.collider.tag.Equals("enemy") && isFalling == true || !hit.collider.tag.Equals("enemyTime") && Timer == true)//EnemyBoxTemp.
         {
             Resucitar();
         }
-        if (!hit.collider.tag.Equals("enemyDmg") && isAlive == false)
+        if (!hit.collider.tag.Equals("enemyDmg") && isAlive == false)//EnemyBoxNpc.
         {
             Resucitar();
         }
