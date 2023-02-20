@@ -14,11 +14,13 @@ public class EnemyBoxTemp : EnemyBox
     public DeadPlayer DeadPlayer;
     public List<Vector3> cuboGuardado;
     public int contador = 0;
+    public EnemyBoxPista enemyBoxPista;
 
     private void Start()
     {
         DeadPlayer = FindObjectOfType<DeadPlayer>();
         texturaPuente = FindObjectOfType<RandomBridge>();
+        enemyBoxPista= FindObjectOfType<EnemyBoxPista>();
         rigidCaida = GetComponent<Rigidbody>();
 
 
