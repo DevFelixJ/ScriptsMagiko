@@ -16,6 +16,7 @@ public class DeadPlayer : MonoBehaviour
     public bool vivo2 = true;
     void Start()
     {
+
         animatorPlayer = GetComponent<Animator>();
         contadorMuertes.text = contador.ToString();
     }
@@ -23,6 +24,9 @@ public class DeadPlayer : MonoBehaviour
     {
         muerteUI();
         desactivarPuente = FindObjectOfType<RandomBridge>();
+
+
+
     }
     public void Morir()
     {
@@ -65,12 +69,14 @@ public class DeadPlayer : MonoBehaviour
 
             if (vivo == false)
             {
-                animatorPlayer.ResetTrigger("Morir");
+                Debug.Log("Estoy dentro del IF VIVO");
+                //animatorPlayer.ResetTrigger("Morir");
+                //animatorPlayer.SetBool("Morir3", false);
                 vivo = true;
             }
             else
             {
-                animatorPlayer.ResetTrigger("Morir2");
+                //animatorPlayer.ResetTrigger("Morir2");
                 vivo2 = true;
             }
         }
