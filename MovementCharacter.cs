@@ -95,6 +95,7 @@ public class MovementCharacter : MonoBehaviour
                 animatorPlayer.SetBool("Caminar", false);
             }
         }
+
         else
         {
             impulsoGravedad -= gravedad; //si el player esta en el suelo le quitamos la gravedad
@@ -129,7 +130,9 @@ public class MovementCharacter : MonoBehaviour
        else if (hit.collider.tag.Equals("enemyDmg") && isAlive == true)//Cuando entre en el collider del enemigo.EnemyBoxNpc.
         {
             hit.collider.GetComponent<EnemyBox>().PlayerInteractua();
-            //StartCoroutine(EnemigoGolpe());
+
+            StartCoroutine(EnemigoGolpe());
+
             isAlive = false;
 
         }
@@ -159,7 +162,7 @@ public class MovementCharacter : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         velocidad = 0;
         animatorPlayer.SetBool("Caminar", false);
-        this.transform.rotation = Quaternion.Euler(0, -80, 0);
+        //this.transform.rotation = Quaternion.Euler(0, -80, 0);
     }
     IEnumerator EnemigoGolpe()
     {
@@ -168,6 +171,7 @@ public class MovementCharacter : MonoBehaviour
     }
     public void Resucitar()
     {
+        enemyBoxPista.DesactivarFlecha();
         enemyBoxTemp.RestaurarCubo();
         impulsoGravedad = -2f;
         velocidad = 2.5f;
@@ -175,5 +179,6 @@ public class MovementCharacter : MonoBehaviour
         isAlive = true;
         Timer = false;
         enemyBoxTemp.contador++;
+
     }
 }//Fin Script
