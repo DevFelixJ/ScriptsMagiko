@@ -19,5 +19,7 @@ public class Enemy1 : MonoBehaviour
         yield return new WaitForSeconds(4);
         GameObject.FindGameObjectWithTag("Player").GetComponent<DeadPlayer>().vivo = false;
         GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetBool("Morir", false);
+        GameObject.FindGameObjectWithTag("enemyVivo").SetActive(false);
+        Time.timeScale = 0;
     }
 }
